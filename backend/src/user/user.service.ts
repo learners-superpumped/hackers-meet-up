@@ -63,7 +63,17 @@ export class UserService {
         return;
       }
 
-      return data;
+      return data.map((match) => {
+        return {
+          user: match.userB,
+          result: {
+            matchingScore: match.score,
+            reasoning: match.reasoning,
+            topicSuggestion: match.topicSuggestion,
+            conversations: match.conversations,
+          },
+        };
+      });
     }
 
     const { data, error } = await supabase
@@ -81,13 +91,24 @@ export class UserService {
         )
       `,
       )
-      .eq('userA', id);
+      .eq('userA', id)
+      .order('score', { ascending: false });
 
     if (error) {
       console.error('Error fetching matches:', error);
       return;
     }
 
-    return data;
+    return data.map((match) => {
+      return {
+        user: match.userB,
+        result: {
+          matchingScore: match.score,
+          reasoning: match.reasoning,
+          topicSuggestion: match.topicSuggestion,
+          conversations: match.conversations,
+        },
+      };
+    });
   }
 }
