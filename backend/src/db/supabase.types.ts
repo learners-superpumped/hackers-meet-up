@@ -40,7 +40,22 @@ export interface Database {
           userA?: number | null
           userB?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "match_userA_fkey"
+            columns: ["userA"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_userB_fkey"
+            columns: ["userB"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       user: {
         Row: {
