@@ -6,7 +6,9 @@ export class LoginController {
   constructor(private loginService: LoginService) { }
 
   @Post()
-  async login(@Body() body: { email: string }): Promise<{ userId: number }> {
+  async login(
+    @Body() body: { email: string; name: string; linkedInUrl: string },
+  ): Promise<{ userId: number }> {
     return await this.loginService.loginOrSignUp(body);
   }
 }

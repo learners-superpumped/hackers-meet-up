@@ -2,6 +2,7 @@
 import {useEffect} from "react";
 import {useRouter} from "next/navigation";
 import classNames from "classnames";
+import {llmHackApi} from "@/client/api";
 
 export default function Home() {
 
@@ -9,13 +10,24 @@ export default function Home() {
 
     useEffect(() => {
         if (typeof window === 'undefined') return
+        handleUser().then()
+    }, [])
+
+    const handleUser = async function () {
         const userId = sessionStorage.getItem('AGIParty/userid')
         if (userId === null) {
             router.push('/auth/login')
         } else {
-            router.push('/')
+            const {data} = await llmHackApi.get(`/user/${userId}`)
+            const {survey} = data[0]
+            if (survey) {
+                router.push('/dashboard')
+            } else {
+                router.push('/survey')
+            }
         }
-    }, [])
+    }
+
 
     return (
         <div className={classNames('w-full', 'h-screen', 'flex', 'justify-center', 'items-center')}>

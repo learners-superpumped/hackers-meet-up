@@ -3,7 +3,11 @@ import { supabase } from '../db/supabase.service';
 
 @Injectable()
 export class LoginService {
-  async loginOrSignUp(body: { email: string }): Promise<{ userId: number }> {
+  async loginOrSignUp(body: {
+    email: string;
+    name: string;
+    linkedInUrl: string;
+  }): Promise<{ userId: number }> {
     const userWithEmail = (
       await supabase
         .from('user')
@@ -21,7 +25,13 @@ export class LoginService {
     // signup
     const { data, error } = await supabase
       .from('user')
-      .upsert([{ email: body.email }])
+      .upsert([
+        {
+          email: body.email,
+          name: body.name,
+          linkedInUrl: body.linkedInUrl,
+        },
+      ])
       .select();
     if (error) {
       throw error;

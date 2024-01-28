@@ -6,7 +6,7 @@ import React from "react";
 const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
-    title: "AGI party",
+    title: "Hacker Match",
     description: "people can meet and get to know each other in second with their AI deputies",
 };
 

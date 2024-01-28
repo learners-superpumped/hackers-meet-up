@@ -5,7 +5,8 @@ import {SurveyQuestionItem} from "@/app/survey/components/question";
 import {useState} from "react";
 import {SurveyQuestion} from "@/model/survey";
 import {useRouter} from "next/navigation";
-import LoadingIndicator from "@/constant/LoadingIndicator";
+import LoadingIndicator from "@/component/LoadingIndicator";
+import {llmHackApi} from "@/client/api";
 
 export default function SurveyPage() {
 
@@ -15,11 +16,14 @@ export default function SurveyPage() {
     const [answers, setAnswers] = useState<{ question: SurveyQuestion, answer: string }[]>([])
 
     const submit = async () => {
-        // Delay 2seconds
-        await new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(undefined);
-            }, 2000)
+        const userId = sessionStorage.getItem('AGIParty/userid')
+
+        // Create Survey
+        await llmHackApi.post(`/user/${userId}/survey`, {
+            result: answers.map(({question, answer}) => ({
+                question: question.item,
+                answer: answer
+            }))
         })
 
         router.push('/dashboard')
